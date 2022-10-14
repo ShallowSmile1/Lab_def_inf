@@ -1,0 +1,2 @@
+admin abs1 0 0 0
+user 123 0 0 0
