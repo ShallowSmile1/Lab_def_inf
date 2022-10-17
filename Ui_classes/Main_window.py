@@ -1,9 +1,6 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QAction
+from PyQt5.QtWidgets import QDialog, QAction, QMessageBox
 from PyQt5.uic import loadUi
-from Ui_classes.Change_pass import ChangePassword
-from Ui_classes.Add_new_user import AddNewUser
-from Ui_classes.User_list import UserList
 import db_work as db
 
 
@@ -14,12 +11,10 @@ class Window(QtWidgets.QMainWindow):
 
         self.db_df = db_df
         self.user = auth_user
-        print(self.user)
-        print(self.user['login'].values[0])
         self.label_user.setText(self.user['login'].values[0])
         if self.user['login'].values[0] != 'admin':
             self.actionNew_User.setVisible(False)
-            self.actionAll_User.setVisible(False)
+            self.actionAll_Users.setVisible(False)
         self.actionChangePass.triggered.connect(self.change_pass)
         self.actionNew_User.triggered.connect(self.new_user)
         self.actionAll_Users.triggered.connect(self.all_users)
@@ -27,17 +22,21 @@ class Window(QtWidgets.QMainWindow):
         self.actionPassReq.triggered.connect(self.help)
 
     def change_pass(self):
-        self.cng_pass_win = ChangePassword()
+        from Ui_classes.Change_pass import ChangePassword
+        prev_win = 'main'
+        self.cng_pass_win = ChangePassword(self.db_df, self.user, prev_win)
         self.cng_pass_win.show()
         self.close()
 
     def new_user(self):
-        self.add_new_user_win = AddNewUser()
+        from Ui_classes.Add_new_user import AddNewUser
+        self.add_new_user_win = AddNewUser(self.db_df, self.user)
         self.add_new_user_win.show()
         self.close()
 
     def all_users(self):
-        self.all_users_win = UserList()
+        from Ui_classes.User_list import UserList
+        self.all_users_win = UserList(self.db_df, self.user)
         self.all_users_win.show()
         self.close()
 
@@ -45,4 +44,6 @@ class Window(QtWidgets.QMainWindow):
         self.close()
 
     def help(self):
-        print('1')
+        QMessageBox.information(self, "Info",
+                             f"Variation 3:\nHaving letters and digits",
+                             QMessageBox.Ok)

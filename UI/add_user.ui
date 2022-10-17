@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>622</width>
     <height>420</height>
    </rect>
   </property>
@@ -14,7 +14,9 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgb(54, 54, 54);</string>
+   <string notr="true">background:rgb(54, 54, 54);color: rgb(177, 177, 177);
+alternate-background-color: rgb(97, 97, 97);
+selection-background-color: rgb(97, 97, 97);</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -71,7 +73,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(173, 173, 173); font-size: 14pt;</string>
+    <string notr="true">background-color: rgb(173, 173, 173); font-size: 14pt;color:rgb(54, 54, 54)</string>
    </property>
    <property name="text">
     <string>OK</string>
@@ -87,7 +89,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(173, 173, 173); font-size: 14pt;</string>
+    <string notr="true">background-color: rgb(173, 173, 173); font-size: 14pt;color:rgb(54, 54, 54)</string>
    </property>
    <property name="text">
     <string>Cancel</string>
