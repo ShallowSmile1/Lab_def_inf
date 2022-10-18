@@ -1,21 +1,31 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5.uic import loadUi
-from Ui_classes.Main_window import Window
-from Ui_classes.Change_pass import ChangePassword
+from Ui_classes.Auth import Login
 import db_work as db
 
 
 class Crypto(QDialog):
-    def __init__(self, db_df):
+    def __init__(self):
         super(Crypto, self).__init__()
-        loadUi("UI/login.ui", self)
-        self.ok_button.clicked.connect(self.auth_func)
+        loadUi("UI/crypto.ui", self)
+        self.ok_button.clicked.connect(self.ok_func)
         self.cancel_button.clicked.connect(self.cancel_func)
-        self.db_df = db_df
 
     def ok_func(self):
-        pass
+        key = self.key.text().encode("utf-8")
+        self.key.setText("")
+        try:
+            if key == b'':
+                raise Exception()
+            key = db.get_base64(key)
+        except Exception:
+            QtWidgets.QMessageBox.critical(self._login, 'Error', 'Incorrect token')
+            self.close()
+        db_df = db.create_base(key)
+        self.log_win = Login(db_df, key)
+        self.log_win.show()
+        self.close()
 
     def cancel_func(self):
-        pass
+        self.close()

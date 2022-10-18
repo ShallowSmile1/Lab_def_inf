@@ -7,7 +7,7 @@ import db_work as db
 
 
 class UserList(QDialog):
-    def __init__(self, db_df: pd.DataFrame, user):
+    def __init__(self, db_df: pd.DataFrame, user, key):
         super(UserList, self).__init__()
         loadUi("UI/user_list.ui", self)
         self.ok_button.clicked.connect(self.ok_func)
@@ -16,6 +16,7 @@ class UserList(QDialog):
         self.save_button.clicked.connect(self.save_func)
         self.prev_button.clicked.connect(self.prev_func)
         self.username.setEnabled(False)
+        self.key = key
         self.db_df = db_df
         self.user = user
         self.cur_num = 1
@@ -48,13 +49,13 @@ class UserList(QDialog):
 
     def ok_func(self):
         from Ui_classes.Main_window import Window
-        self.main_window = Window(self.db_df, self.user)
+        self.main_window = Window(self.db_df, self.user, self.key)
         self.main_window.show()
         self.close()
 
     def cancel_func(self):
         from Ui_classes.Main_window import Window
-        self.main_window = Window(self.db_df, self.user)
+        self.main_window = Window(self.db_df, self.user, self.key)
         self.main_window.show()
         self.close()
 
@@ -62,5 +63,4 @@ class UserList(QDialog):
         username = self.username.text()
         block = str(int(self.block.isChecked()))
         limit = str(int(self.limit.isChecked()))
-        db.change(self.db_df, username, limit=limit, block=block)
-        print(self.db_df)
+        db.change(self.db_df, self.key, username, limit=limit, block=block)

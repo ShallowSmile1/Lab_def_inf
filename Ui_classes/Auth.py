@@ -7,13 +7,14 @@ import db_work as db
 
 
 class Login(QDialog):
-    def __init__(self, db_df):
+    def __init__(self, db_df, key):
         super(Login, self).__init__()
         loadUi("UI/login.ui", self)
         self.auth_button.clicked.connect(self.auth_func)
         self.cancel_button.clicked.connect(self.cancel_func)
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.db_df = db_df
+        self.key = key
         self.try_auth = 0
 
     def auth_func(self):
@@ -35,17 +36,17 @@ class Login(QDialog):
                                                  f"Please change your password. It must have letters and digits",
                                                  QMessageBox.Ok)
                             prev_win = 'auth'
-                            self.cng_pass_win = ChangePassword(self.db_df, user, prev_win)
+                            self.cng_pass_win = ChangePassword(self.db_df, user, prev_win, self.key)
                             self.cng_pass_win.show()
                             self.close()
                         else:
                             if user['first_ent'].values[0] == '1':
                                 prev_win = 'auth'
-                                self.cng_pass_win = ChangePassword(self.db_df, user, prev_win)
+                                self.cng_pass_win = ChangePassword(self.db_df, user, prev_win, self.key)
                                 self.cng_pass_win.show()
                                 self.close()
                             else:
-                                self.main_win = Window(self.db_df, user)
+                                self.main_win = Window(self.db_df, user, self.key)
                                 self.main_win.show()
                                 self.close()
                     else:

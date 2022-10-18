@@ -5,7 +5,7 @@ import db_work as db
 
 
 class ChangePassword(QDialog):
-    def __init__(self, db_df, user, prev_win):
+    def __init__(self, db_df, user, prev_win, key):
         super(ChangePassword, self).__init__()
         loadUi("UI/Change_pass.ui", self)
         self.change_button.clicked.connect(self.change_func)
@@ -16,6 +16,7 @@ class ChangePassword(QDialog):
         self.db_df = db_df
         self.user = user
         self.prev_win = prev_win
+        self.key = key
 
     def change_func(self):
         old_password = self.old_pass.text()
@@ -26,15 +27,15 @@ class ChangePassword(QDialog):
             if new_password == confirm_password:
                 if ((db.check_pass(new_password) and self.user['limit'].values[0] == '1') or
                     (self.user['limit'].values[0] == '0')):
-                    db.change(self.db_df, self.user['login'].values[0], new_password)
+                    db.change(self.db_df, self.key, self.user['login'].values[0], new_password)
                     if self.prev_win == 'auth':
                         from Ui_classes.Auth import Login
-                        self.log_win = Login(self.db_df)
+                        self.log_win = Login(self.db_df, self.key)
                         self.log_win.show()
                         self.close()
                     else:
                         from Ui_classes.Main_window import Window
-                        self.main_win = Window(self.db_df, self.user)
+                        self.main_win = Window(self.db_df, self.user, self.key)
                         self.main_win.show()
                         self.close()
                 elif not(db.check_pass(new_password)) and self.user['limit'].values[0] == '1':
@@ -63,11 +64,11 @@ class ChangePassword(QDialog):
     def cancel_func(self):
         if self.prev_win == 'auth':
             from Ui_classes.Auth import Login
-            self.log_win = Login(self.db_df)
+            self.log_win = Login(self.db_df, self.key)
             self.log_win.show()
             self.close()
         else:
             from Ui_classes.Main_window import Window
-            self.main_win = Window(self.db_df, self.user)
+            self.main_win = Window(self.db_df, self.user, self.key)
             self.main_win.show()
             self.close()
