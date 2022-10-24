@@ -10,6 +10,7 @@ class AddNewUser(QDialog):
         loadUi("UI/add_user.ui", self)
         self.ok_button.clicked.connect(self.ok_func)
         self.cancel_button.clicked.connect(self.cancel_func)
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.db_df = db_df
         self.key = key
         self.user = user

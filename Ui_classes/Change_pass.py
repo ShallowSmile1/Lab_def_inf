@@ -26,8 +26,8 @@ class ChangePassword(QDialog):
         if self.user['password'].values[0] == old_password:
             if new_password == confirm_password:
                 if ((db.check_pass(new_password) and self.user['limit'].values[0] == '1') or
-                    (self.user['limit'].values[0] == '0')):
-                    db.change(self.db_df, self.key, self.user['login'].values[0], new_password)
+                                                    (self.user['limit'].values[0] == '0')):
+                    db.change(self.db_df, self.key, self.user['login'].values[0], new_password, first_ent='0')
                     if self.prev_win == 'auth':
                         from Ui_classes.Auth import Login
                         self.log_win = Login(self.db_df, self.key)

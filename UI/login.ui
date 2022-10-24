@@ -21,9 +21,9 @@ selection-background-color: rgb(97, 97, 97);</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>190</x>
      <y>50</y>
-     <width>231</width>
+     <width>281</width>
      <height>51</height>
     </rect>
    </property>
@@ -38,9 +38,9 @@ selection-background-color: rgb(97, 97, 97);</string>
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>150</y>
-     <width>71</width>
-     <height>31</height>
+     <y>140</y>
+     <width>81</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -55,7 +55,7 @@ selection-background-color: rgb(97, 97, 97);</string>
     <rect>
      <x>70</x>
      <y>220</y>
-     <width>111</width>
+     <width>131</width>
      <height>41</height>
     </rect>
    </property>

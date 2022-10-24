@@ -20,8 +20,7 @@ class UserList(QDialog):
         self.db_df = db_df
         self.user = user
         self.cur_num = 1
-        self.total_users = len(self.db_df.columns) + 1
-        print(self.total_users)
+        self.total_users = len(self.db_df.index)
         self.cur_user_at_list = db.get_user_by_num(self.db_df, self.cur_num % self.total_users)
         self.set_params()
 

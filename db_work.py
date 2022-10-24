@@ -13,7 +13,6 @@ def create_df(key):
         file_b = file_b.decode()
         list_df = [[j for j in i.split()] for i in file_b.split('\n')]
     df = pd.DataFrame(list_df, columns=['login', 'password', 'limit', 'block', 'first_ent'])
-    print(df)
     return df
 
 
@@ -22,7 +21,7 @@ def find_user(df, login):
     if user.shape[0] == 1:
         return user
     else:
-        raise NameError('пользователь не найден')
+        raise NameError()
 
 
 def get_user_by_num(df: pd.DataFrame, num):
@@ -30,19 +29,27 @@ def get_user_by_num(df: pd.DataFrame, num):
 
 
 def add_user(df, key, login, password):
+    import os
     f = Fernet(key)
     new_user = pd.DataFrame([[login, password, '0', '0', '1']],
                             columns=['login', 'password', 'limit', 'block', 'first_ent'])
     df = pd.concat([df, new_user], ignore_index=True)
     strin = f'\n{login} {password} 0 0 1'
+    with open('database.txt', 'rb') as file:
+        db = file.read()
+    db = f.decrypt(db)
+    db = db.decode()
+    strin = db + strin
     strin = strin.encode('utf-8')
     strin = f.encrypt(strin)
-    with open('database.txt', 'wb') as file:
+    with open('database_out.txt', 'wb') as file:
         file.write(strin)
+    os.remove('database.txt')
+    os.rename('database_out.txt', 'database.txt')
     return df
 
 
-def change(df, key, login, password=None, limit=None, block=None):
+def change(df, key, login, password=None, limit=None, block=None, first_ent=None):
     import os
 
     f = Fernet(key)
@@ -63,21 +70,27 @@ def change(df, key, login, password=None, limit=None, block=None):
         new_line = new_line + " " + block
     else:
         new_line = new_line + " " + user['block'].values[0]
-
-    df.loc[(df.login == login), 'first_ent'] = '0'
-    new_line = new_line + " " + '0\n'
-    new_line = f.encrypt(new_line.encode('utf-8'))
+    if first_ent:
+        df.loc[(df.login == login), 'first_ent'] = first_ent
+        new_line = new_line + " " + first_ent
+    else:
+        new_line = new_line + " " + user['first_ent'].values[0]
 
     with open('database.txt', 'rb') as file_in, open('database_out.txt', 'wb') as file_out:
         text = file_in.read()
         text = f.decrypt(text)
         text = text.decode()
-        for line in text.split('\n'):
+        new_text = ''
+        for i, line in enumerate(text.split('\n')):
+            if i != 0:
+                new_text = new_text + "\n"
             if not(line.startswith(login + ' ')):
-                line = f.encrypt(line.encode('utf-8'))
-                file_out.write(line)
+                new_text = new_text + line
             else:
-                file_out.write(new_line)
+                new_text = new_text + new_line
+        new_text = new_text.encode('utf-8')
+        new_text = f.encrypt(new_text)
+        file_out.write(new_text)
     os.remove('database.txt')
     os.rename('database_out.txt', 'database.txt')
     return df
