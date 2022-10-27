@@ -1,5 +1,3 @@
-import numpy
-import pandas
 import pandas as pd
 from cryptography.fernet import Fernet
 import base64

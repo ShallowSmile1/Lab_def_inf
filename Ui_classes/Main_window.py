@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QAction, QMessageBox
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.uic import loadUi
-import db_work as db
 
 
 class Window(QtWidgets.QMainWindow):
