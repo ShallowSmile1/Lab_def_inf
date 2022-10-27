@@ -102,7 +102,7 @@ def create_base(key):
     except FileNotFoundError:
         with open('database.txt', 'wb') as file:
             f = Fernet(key)
-            strin = b'ADMIN ADMIN 0 0 0'
+            strin = b'ADMIN ADMIN 0 0 1'
             strin = f.encrypt(strin)
             file.write(strin)
     finally:
